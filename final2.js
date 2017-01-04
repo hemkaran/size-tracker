@@ -1,8 +1,6 @@
 var nodegit = require("nodegit"),
     path = require("path"),
     exec = require('child-process-promise').exec,
-
-    historyFile = "test",
     walker,
     historyCommits = [],
     sizes = [],
@@ -19,6 +17,7 @@ var path = require('path');
 
 var branch = process.argv[3];
 var filename = process.argv[4];
+var historyFile = process.argv[4];
 
 var root_path = process.argv[5];
 
@@ -110,16 +109,23 @@ if(process.argv[2] == "--local"){
       }
     }
 
+    console.log('one');
+    console.log(resultingArrayOfCommits);
     resultingArrayOfCommits.forEach(function(entry) {
       historyCommits.push(entry);
     });
 
+    console.log('two');
+    console.log(historyCommits);
     lastSha = historyCommits[historyCommits.length - 1].commit.sha();
+
+    console.log('three');
 
     walker = repo.createRevWalk();
     walker.push(lastSha);
     walker.sorting(nodegit.Revwalk.SORT.TIME);
 
+    console.log('four');
     return walker.fileHistoryWalk(historyFile, 1)
       .then(compileHistory);
   }
@@ -214,3 +220,4 @@ if(process.argv[2] == "--local"){
 
 
 }
+
