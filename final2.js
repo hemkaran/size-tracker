@@ -25,7 +25,7 @@ var root_path = process.argv[5];
 
 if(process.argv[2] == "--local"){
 
-  var pathToRepo =  require("path").resolve(__dirname, root_path+"/.git");
+  var pathToRepo =  require("path").resolve(root_path+"/.git");
 
   function getFilesizeInBytes(filename) {
       //filename = path.join(JSLIB_REPO_PATH, filename);
@@ -124,7 +124,7 @@ if(process.argv[2] == "--local"){
       .then(compileHistory);
   }
 
-  nodegit.Repository.open(path.resolve(__dirname, root_path+"/.git"))
+  nodegit.Repository.open(path.resolve(root_path+"/.git"))
     .then(function(r) {
       repo = r;
       var checkoutOpts = {
@@ -166,23 +166,22 @@ if(process.argv[2] == "--local"){
       });
 
    
-    exec('git describe --abbrev=0 --tags').then(function(result){
+    exec('git --git-dir='+root_path+'/.git describe --abbrev=0 --tags').then(function(result){
 
       latestTag = result.stdout;
       console.log(latestTag);
 
-      exec('git rev-list -n 1 '+latestTag).then(function(result){
+      exec('git --git-dir='+root_path+'/.git rev-list -n 1 '+latestTag).then(function(result){
 
         tagCommitHash = result.stdout;
         console.log("step-1"+tagCommitHash);
           
           repo.getCommit(tagCommitHash).then(function(commit) {
-            console.log('ssfd');
             return commit.getEntry(historyFile);
           })
           .then(function(entry) {
 
-            console.log("sfddsfds");
+    
             entry.getBlob().then(function(blob) {
               tagCommitSize = blob.rawsize();
               console.log(blob.rawsize());
@@ -215,4 +214,3 @@ if(process.argv[2] == "--local"){
 
 
 }
-
