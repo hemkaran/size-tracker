@@ -166,7 +166,7 @@ if(process.argv[2] == "--local"){
 
         entry.getBlob().then(function(blob) {
           latestCommitSize = blob.rawsize();
-          console.log(blob.rawsize());
+          console.log('latest commit size is' + blob.rawsize());
         });
 
       });
@@ -190,7 +190,7 @@ if(process.argv[2] == "--local"){
     
             entry.getBlob().then(function(blob) {
               tagCommitSize = blob.rawsize();
-              console.log(blob.rawsize());
+              console.log('tag filesize is' + blob.rawsize());
 
                   sizediff = Math.abs(tagCommitSize - latestCommitSize);
                   if(tagCommitSize > latestCommitSize){
